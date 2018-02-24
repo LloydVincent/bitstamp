@@ -1,7 +1,7 @@
 ## BitStamp
 
 Javascript numbers have 64 bits, that's a lot to work with.<br>
-BitStamp is a Typescript class which can usees the bits in a single number to represent a small object.
+BitStamp is a Typescript class which uses the bits in a single number to represent a small object.
 
 ### Example usage
 
@@ -18,7 +18,7 @@ const CHARACTER_DATA_BITMAP = [
   { key: "isLocked",     bitmask: 0b00000010000000000000000000000000 }, // boolean
   { key: "equippedItem", bitmask: 0b00000001111111100000000000000000 }, // 255
   { key: "iv1",          bitmask: 0b00000000000000011110000000000000 }, // 15
-  { key: "iv2",          bitmask: 0b00000000000000000001111000000000 }  // 15
+  { key: "iv2",          bitmask: 0b00000000000000000001111000000000 },  // 15
   { key: "unused",       bitmask: 0b00000000000000000000000111111111 }  
 ]
 
