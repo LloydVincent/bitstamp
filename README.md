@@ -9,11 +9,11 @@ Below illustrates a BitStamp used to represent a character instance in a game.
 
 ```javascript
 const CHARACTER_DATA_BITMAP = [
-  // first byte
+  // first 4 bytes
   { key: "masterId",     bitmask: 0b11111111111100000000000000000000 }, // max 4095
   { key: "level",        bitmask: 0b00000000000011111110000000000000 }, // 127
   { key: "exp",          bitmask: 0b00000000000000000001111111111111 }, // 8191
-  // second byte
+  // second 4 bytes
   { key: "type",         bitmask: 0b11111100000000000000000000000000 }, // 63
   { key: "isLocked",     bitmask: 0b00000010000000000000000000000000 }, // boolean
   { key: "equippedItem", bitmask: 0b00000001111111100000000000000000 }, // 255
@@ -46,7 +46,7 @@ console.log(myBitStamp.data)  // { masterId: 2000, level: 120, ... }
 
 * bitmaps should define segments in logical left-to-right order
 * bits within segments must be contiguous
-* the last bit of the first byte is part of a segment (it signals the next byte)
+* the last bit of the fourth byte is part of a segment (it signals the next uint32)
 * a segment can not span from the first to the second byte
 * 1-length segments are cast to booleans
 * bits not in any segment are 0 when BitStamp.stamp is called
