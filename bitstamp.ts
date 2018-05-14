@@ -7,8 +7,13 @@ export class BitStamp {
   public data: any = {}
   private __segments: BitStampSegment[]
 
-  constructor(float: number, segments: BitStampSegment[]) {
-    this.setFloat(float, segments)
+  constructor(floatOrObjectOrUint32Array: any, segments: BitStampSegment[]) {
+    if(floatOrObjectOrUint32Array.constructor === Object)
+      this.setUint32Array([floatOrObjectOrUint32Array["0"], floatOrObjectOrUint32Array["1"]], segments)
+    else if(floatOrObjectOrUint32Array.length)
+      this.setUint32Array(floatOrObjectOrUint32Array, segments)
+    else
+      this.setFloat(floatOrObjectOrUint32Array, segments)
   }
 
   // ASSUMPTIONS
@@ -34,6 +39,9 @@ export class BitStamp {
     }
     this.__segments = segments
   }
+  public setUint32Array(uint32array: number[], segments: BitStampSegment[]) {
+    this.setFloat(BitStamp.IEEEToDouble(uint32array), segments)
+  }
 
   public get stamp(): number {
     var bytes = [0, 0]
@@ -49,12 +57,16 @@ export class BitStamp {
     return BitStamp.IEEEToDouble(bytes)
   }
 
+  public get ieee(): Uint32Array {
+    return BitStamp.DoubleToIEEE(this.stamp)
+  }
+
   public toString(): string {
     return `BitStamp (${this.stamp}): ${JSON.stringify(this.data)}`
   }
 
   public isEqual(otherStamp: BitStamp) {
-    var keyDiffCheck = (key => { return this.data[key] === otherStamp[key] })
+    var keyDiffCheck = (key => { return this.data[key] !== otherStamp.data[key] })
     return Object.keys(this.data).findIndex(keyDiffCheck) === -1 &&
       Object.keys(otherStamp.data).findIndex(keyDiffCheck) === -1
   }
